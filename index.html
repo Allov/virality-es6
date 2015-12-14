@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Virality ES6</title>
+    <meta name="description" content="Virality">
+    <meta name="author" content="Allov">
+    <meta name="viewport" content="width=device-width initial-scale=1 maximum-scale=1 user-scalable=no">
+    <link rel="stylesheet" href="css/styles.css" type="text/css"/>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+    <script src="jspm_packages/system.js"></script>
+    <script src="config.js"></script>
+    <script>
+        System.import('src/index').catch(console.error.bind(console));
+    </script>
+
+    <div id="game-area">
+        <button id="fullscreen" class="btn btn-primary"><i class="fa fa-arrows-alt"></i><span class="sr-only">&nbsp;Fullscreen</span></button>
+    </div>
+</body>
+
+</html>
