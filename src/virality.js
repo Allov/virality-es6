@@ -8,6 +8,7 @@ class Engine {
         this.fpsCurrent = 0;
         this.pause = false;
         this.components = [];
+        this.uiComponents = [];
 
         this.mouse = {};
         this.media = 'desktop';
@@ -62,6 +63,13 @@ class Engine {
         this.components.push(component);
     }
 
+    addUiComponent(component) {
+        if (!this._bufferContext) throw 'init() has to be called first.';
+
+        component.init(this._bufferContext);
+        this.uiComponents.push(component);
+    }
+
     start() {
         var self = this;
         let frame = window.requestAnimationFrame(function handler(time) {
@@ -89,6 +97,14 @@ class Engine {
             x: ratioX * this._buffer.width,
             y: ratioY * this._buffer.height
         };
+    }
+
+    createCanvas(width, height) {
+        var canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        return canvas;
     }
 
     _attachEvents() {
@@ -172,16 +188,27 @@ class Engine {
 
         if (this._resized) {
             this._resized = false;
-            for (let i in this.components) {
-                this.components[i].resized();
-                this.components[i].update(elapsed);
-                this.components[i].render(this._bufferContext);
+            for (let component of this.components) {
+                component.resized();
+                component.update(elapsed);
+                component.render(this._bufferContext);
             }
+
+            for (let component of this.uiComponents) {
+                component.resized();
+                component.update(elapsed);
+                component.render(this._bufferContext);
+            }            
         } else {
-            for (let i in this.components) {
-                this.components[i].update(elapsed);
-                this.components[i].render(this._bufferContext);
+            for (let component of this.components) {
+                component.update(elapsed);
+                component.render(this._bufferContext);
             }
+
+            for (let component of this.uiComponents) {
+                component.update(elapsed);
+                component.render(this._bufferContext);
+            }  
         }
 
         this._context.drawImage(this._buffer, 0, 0, this.canvas.width, this.canvas.height);

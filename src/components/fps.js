@@ -9,7 +9,7 @@ export default class Fps extends ViralityObject {
 		this.x = config.x || 0;
 		this.y = config.y || 0;
 
-		this._writer = new TextWriter('', this.x, this.y);
+		this._writer = new TextWriter('', this.x, this.y, { color: '#000' });
 	}
 
 	update(elapsed) {

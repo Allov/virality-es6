@@ -3,47 +3,44 @@ import {
 }
 from 'virality';
 
-export default class HeadQuarter extends ViralityObject {
+import createPelletCanvas from 'graphics/pellet';
+import BaseBuilding from 'components/base-building';
+
+export default class HeadQuarter extends BaseBuilding {
 
     constructor(name, x, y) {
-    	super();
-    	this.name = name;
-    	this.x = x;
-    	this.y = y;
-
-    	this._canvas = document.createElement('canvas');
-    	this._context = this._canvas.getContext('2d');
-    	this._canvas.width = this._canvas.height = 200;
+        super(name, x, y, 25);
     }
 
     init() {
-    	var context = this._context;
-
-
-        context.beginPath();
-        context.arc(this._canvas.width / 2, this._canvas.height / 2, 75, 0, 2 * Math.PI);
-        context.closePath();
-
-        context.fillStyle = 'rgba(100, 200, 100, 0.5)';
-        context.fill();
-
-    	context.strokeStyle = '#3A3';
-        context.lineWidth = 3;
-        context.stroke();
-
-        context.beginPath();
-        context.arc(this._canvas.width / 2, this._canvas.height / 2, 15, 0, 2 * Math.PI);
-        context.closePath();
-
-        context.fillStyle = 'rgba(200, 100, 100, 1)'
-        context.fill();
-
-    	context.strokeStyle = '#A33';
-        context.lineWidth = 3;
-        context.stroke();
+        this._pelletCanvas = createPelletCanvas(this.width, this.height, '#3FEBFF');
+        this._iconCanvas = this._createIconCanvas();
     }
 
-    render(context) {
-    	context.drawImage(this._canvas, this.x - (this._canvas.width / 2), this.y - (this._canvas.height / 2));
+    resized() {
+        this._pelletCanvas = createPelletCanvas(this.width, this.height, '#3FEBFF');
+    }
+
+    _createIconCanvas() {
+        var width = this.width + 4, 
+            height = this.height + 4;
+        var canvas = Virality.createCanvas(width, height);
+        var context = canvas.getContext('2d');
+
+        var x = width / 2,
+            y = height / 2;
+
+        context.fillRect(x - 8, y - 5, 3, 10);
+        context.fillRect(x - 1, y - 5, 2, 10);
+        context.fillRect(x + 5, y - 5, 3, 10);
+        context.fillRect(x - 9, y + 5, 18, 3);
+
+        context.beginPath();
+        context.moveTo(x, y - 12);
+        context.lineTo(x - 10, y - 3);
+        context.lineTo(x + 10, y - 3);
+        context.fill();
+
+        return canvas; 
     }
 }
